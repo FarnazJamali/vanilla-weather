@@ -1,9 +1,12 @@
-.wrapper{
-        width: 600px;
-        height: max-content;
-        border: 1px solid rgb(165, 158, 158);
-        border-radius: 20px;
-        margin: 50px auto 0;
-        padding: 10px;
+.wrapper {
+  width: 600px;
+  height: max-content;
+  border: 1px solid rgb(165, 158, 158);
+  border-radius: 20px;
+  margin: 50px auto 0;
+  padding: 10px;
+}
 
-      }
+p {
+  text-transform: capitalize;
+}
