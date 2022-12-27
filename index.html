@@ -15,10 +15,10 @@
     <title>weather App</title>
   </head>
   <body>
-     <div class="container my-4">
+    <div class="container my-4">
       <div class="wrapper">
         <div class="row justify-content-center">
-          <div class="col-9 mx-auto">
+          <div class="col-10 mx-auto py-3">
             <form class="row" action="" id="form">
               <div class="col-6">
                 <input
@@ -41,23 +41,26 @@
           </div>
         </div>
         <div class="row justify-content-center">
-          <div class="col-5 my-2">
-            <h3 id="city">Tehran</h3>
-            <span id="date"></span>
-            <p id="description">Sunny</p>
-            <h1>15 °C</h1>
+          <div class="col-6 my-2">
+            <h3 id="city" class="text-secondary">Tehran</h3>
+            <span id="date" class="text-secondary"></span>
+            <p id="description" class="text-secondary">Sunny</p>
+            <h1>15 <span class="fs-6 fw-light">°C|</span><span class="fs-6 fw-light">°F</span></h1>
           </div>
           <div class="col-4 align-self-end">
             <div class="row flex-column">
               <div class="col">
-                <p id="humidity">humidity: 10%</p>
-                <p id="wind">Wind speed: 2 km/h</p>
+                <p id="precepitation" class="lh-1 text-secondary">
+                  Precepitation: 0%
+                </p>
+                <p id="humidity" class="lh-1 text-secondary">humidity: 10%</p>
+                <p id="wind" class="lh-1 text-secondary">Wind speed: 2 km/h</p>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="col-4 mt-3 mx-auto">
+      <div class="col-6 mx-auto">
         <a
           href="https://github.com/FarnazJamali/vanilla-weather"
           class="btn btn-link"

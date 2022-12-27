@@ -7,26 +7,34 @@ function formatDate() {
     "friday",
     "saturday",
     "sunday",
-    ];
-    let month = [
-      "january",
-      "february",
-      "march",
-      "april",
-      "may",
-      "june",
-      "july",
-      "august",
-      "september",
-      "october",
-      "novermber",
-      "december",
-    ];
+  ];
+  let month = [
+    "january",
+    "february",
+    "march",
+    "april",
+    "may",
+    "june",
+    "july",
+    "august",
+    "september",
+    "october",
+    "novermber",
+    "december",
+  ];
   let now = new Date();
-    let day = week[now.getDay() - 1];
-    let currentMonth = month[now.getMonth()];
+  let day = week[now.getDay() - 1];
+  let currentMonth = month[now.getMonth()];
   let time =
-    now.getHours() + ":" + now.getMinutes() + " " + day + " "+ now.getDate()+ " " + currentMonth;
+    now.getHours() +
+    ":" +
+    now.getMinutes() +
+    " " +
+    day +
+    " " +
+    now.getDate() +
+    " " +
+    currentMonth;
   return time;
 }
 let newDate = new Date();
@@ -36,6 +44,7 @@ function changeData(res) {
   document.querySelector("h1").innerHTML =
     Math.round(res.data.main.temp) + "°C";
   document.querySelector("#description").innerHTML = res.data.weather[0].main;
+  document.querySelector("#precepitation").innerHTML = "Precepitation: ";
   document.querySelector("#humidity").innerHTML =
     "Humidity: " + res.data.main.humidity + "%";
   document.querySelector("#wind").innerHTML =
