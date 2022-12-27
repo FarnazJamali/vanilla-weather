@@ -41,6 +41,9 @@ let newDate = new Date();
 document.querySelector("#date").innerHTML = formatDate(newDate);
 
 function changeData(res) {
+  console.log(res.data.weather[0].icon);
+   document.querySelector("#icon").src =
+     `http://openweathermap.org/img/wn/${res.data.weather[0].icon}@2x.png`;
   document.querySelector("h1").innerHTML =
     Math.round(res.data.main.temp) + "°C";
   document.querySelector("#description").innerHTML = res.data.weather[0].main;
@@ -76,6 +79,7 @@ function showLocation(location) {
 
   function showCurrent(loc) {
     document.getElementById("city").innerHTML = loc.data.name;
+    document.querySelector("#icon").innerHTML = "";
     document.querySelector("h1").innerHTML =
       Math.round(loc.data.main.temp) + "°C";
     document.querySelector("#description").innerHTML = loc.data.weather[0].main;
