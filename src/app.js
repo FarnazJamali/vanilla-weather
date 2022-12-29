@@ -40,14 +40,16 @@ function formatDate() {
 let newDate = new Date();
 document.querySelector("#date").innerHTML = formatDate(newDate);
 
+//change data based on thee city
 function changeData(res) {
   console.log(res.data);
-   document.querySelector(
-     "#icon"
-   ).src = `http://shecodes-assets.s3.amazonaws.com/api/weather/icons/${res.data.condition.icon}.png`;
-  document.querySelector("h1").innerHTML =
-    Math.round(res.data.temperature.current) + "°C";
-  document.querySelector("#description").innerHTML = res.data.condition.description;
+  document.querySelector(
+    "#icon"
+  ).src = `http://shecodes-assets.s3.amazonaws.com/api/weather/icons/${res.data.condition.icon}.png`;
+  temperatureMain = Math.round(res.data.temperature.current);
+  document.querySelector("h1").innerHTML = temperatureMain;
+  document.querySelector("#description").innerHTML =
+    res.data.condition.description;
   // document.querySelector("#precepitation").innerHTML = "Precepitation: ";
   document.querySelector("#humidity").innerHTML =
     "Humidity: " + res.data.temperature.humidity + "%";
@@ -60,7 +62,7 @@ function search(city) {
   let url = `https://api.shecodes.io/weather/v1/current?query=${city}&key=${apiKey}&units=metric`;
   axios.get(url).then(changeData);
 }
-
+//search city and see the result
 function changeCity(event) {
   event.preventDefault();
   let input = document.getElementById("input_value");
@@ -68,9 +70,10 @@ function changeCity(event) {
   document.getElementById("city").innerHTML = input.value;
   search(city);
 }
-search("Tehran");
+
 document.getElementById("form").addEventListener("submit", changeCity);
 
+//for current location
 function showLocation(location) {
   let lat = location.coords.latitude;
   let lon = location.coords.longitude;
@@ -81,8 +84,9 @@ function showLocation(location) {
     document.querySelector(
       "#icon"
     ).src = `http://shecodes-assets.s3.amazonaws.com/api/weather/icons/${loc.data.condition.icon}.png`;
-    document.querySelector("h1").innerHTML =
-      Math.round(loc.data.temperature.current) + "°C";
+    document.querySelector("h1").innerHTML = Math.round(
+      loc.data.temperature.current
+    );
     document.querySelector("#description").innerHTML =
       loc.data.condition.description;
     // // document.querySelector("#precepitation").innerHTML = "Precepitation: ";
@@ -92,7 +96,7 @@ function showLocation(location) {
       "Wind speed: " + loc.data.wind.speed + " km/h";
   }
   let apiKey = "256e0719bob599t8f79f42a814ed4fe3";
-  let urlSecond = `https://api.shecodes.io/weather/v1/current?lon=${lon}&lat=${lat}&key=${apiKey}&units=metric`
+  let urlSecond = `https://api.shecodes.io/weather/v1/current?lon=${lon}&lat=${lat}&key=${apiKey}&units=metric`;
   axios.get(urlSecond).then(showCurrent);
 }
 
@@ -103,3 +107,25 @@ function getCurrentPosition() {
 document
   .getElementById("current")
   .addEventListener("click", getCurrentPosition);
+
+  // a good idea to not change the main weather
+let temperatureMain = null;
+
+// weather convertion
+function toCelsius() {
+  document.querySelector("h1").innerHTML = temperatureMain;
+  fahrenheit.classList.remove("text-primary", "fw-bold");
+  celsius.classList.add("text-primary", "fw-bold");
+}
+let celsius = document.getElementById("celsius")
+  celsius.addEventListener("click", toCelsius);
+
+function toFahrenheit() {
+  document.querySelector("h1").innerHTML = temperatureMain * 9.5 + 32;
+  celsius.classList.remove("text-primary", "fw-bold");
+  fahrenheit.classList.add("text-primary", "fw-bold");
+}
+
+let fahrenheit = document.getElementById("fahrenheit")
+  fahrenheit.addEventListener("click", toFahrenheit);
+search("Tehran");
