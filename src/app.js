@@ -41,23 +41,23 @@ let newDate = new Date();
 document.querySelector("#date").innerHTML = formatDate(newDate);
 
 function changeData(res) {
-  console.log(res.data.weather[0].icon);
-   document.querySelector("#icon").src =
-     `http://openweathermap.org/img/wn/${res.data.weather[0].icon}@2x.png`;
+  console.log(res.data);
+   document.querySelector(
+     "#icon"
+   ).src = `http://shecodes-assets.s3.amazonaws.com/api/weather/icons/${res.data.condition.icon}.png`;
   document.querySelector("h1").innerHTML =
-    Math.round(res.data.main.temp) + "°C";
-  document.querySelector("#description").innerHTML = res.data.weather[0].main;
-  document.querySelector("#precepitation").innerHTML = "Precepitation: ";
+    Math.round(res.data.temperature.current) + "°C";
+  document.querySelector("#description").innerHTML = res.data.condition.description;
+  // document.querySelector("#precepitation").innerHTML = "Precepitation: ";
   document.querySelector("#humidity").innerHTML =
-    "Humidity: " + res.data.main.humidity + "%";
+    "Humidity: " + res.data.temperature.humidity + "%";
   document.querySelector("#wind").innerHTML =
     "Wind speed: " + res.data.wind.speed + " km/h";
-  console.log(res.data);
 }
 
 function search(city) {
-  let apiKey = "aca4dd3643b89e94dbd3cac6cf6f2638";
-  let url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+  let apiKey = "256e0719bob599t8f79f42a814ed4fe3";
+  let url = `https://api.shecodes.io/weather/v1/current?query=${city}&key=${apiKey}&units=metric`;
   axios.get(url).then(changeData);
 }
 
@@ -72,25 +72,27 @@ search("Tehran");
 document.getElementById("form").addEventListener("submit", changeCity);
 
 function showLocation(location) {
-  console.log(location);
   let lat = location.coords.latitude;
   let lon = location.coords.longitude;
-  console.log(lat, lon);
 
   function showCurrent(loc) {
-    document.getElementById("city").innerHTML = loc.data.name;
-    document.querySelector("#icon").innerHTML = "";
+    console.log(loc);
+    document.getElementById("city").innerHTML = loc.data.city;
+    document.querySelector(
+      "#icon"
+    ).src = `http://shecodes-assets.s3.amazonaws.com/api/weather/icons/${loc.data.condition.icon}.png`;
     document.querySelector("h1").innerHTML =
-      Math.round(loc.data.main.temp) + "°C";
-    document.querySelector("#description").innerHTML = loc.data.weather[0].main;
+      Math.round(loc.data.temperature.current) + "°C";
+    document.querySelector("#description").innerHTML =
+      loc.data.condition.description;
+    // // document.querySelector("#precepitation").innerHTML = "Precepitation: ";
     document.querySelector("#humidity").innerHTML =
-      "Humidity: " + loc.data.main.humidity + "%";
+      "Humidity: " + loc.data.temperature.humidity + "%";
     document.querySelector("#wind").innerHTML =
       "Wind speed: " + loc.data.wind.speed + " km/h";
-    console.log(loc.data);
   }
-  let apiKey = "aca4dd3643b89e94dbd3cac6cf6f2638";
-  let urlSecond = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
+  let apiKey = "256e0719bob599t8f79f42a814ed4fe3";
+  let urlSecond = `https://api.shecodes.io/weather/v1/current?lon=${lon}&lat=${lat}&key=${apiKey}&units=metric`
   axios.get(urlSecond).then(showCurrent);
 }
 
