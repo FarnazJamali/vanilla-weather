@@ -40,9 +40,49 @@ function formatDate() {
 let newDate = new Date();
 document.querySelector("#date").innerHTML = formatDate(newDate);
 
+function forecast(res) {
+  console.log(res);
+  console.log(res && res.data.daily[3].time);
+  // let forecast = res.data.daily;
+  // console.log(forecast);
+  // let forecastElement = document.querySelector("#forecast");
+
+  let forecastHTML = `<div class="row">`;
+  //  res &&
+    //  res.data.daily.forEach(function (day,index) {
+    //    forecastHTML =
+    //      forecastHTML +
+    //      `
+    //     <div class="col-2">
+    //       <div class="weather-forecast-date">${day}</div>
+    //       <img
+    //         src="http://openweathermap.org/img/wn/50d@2x.png"
+    //         alt=""
+    //         width="42"
+    //       />
+    //       <div class="weather-forecast-temperatures">
+    //         <span class="weather-forecast-temperature-max"> 18° </span>
+    //         <span class="weather-forecast-temperature-min"> 12° </span>
+    //       </div>
+    //     </div>
+    // `;
+    //  });
+
+  // forecastHTML = forecastHTML + `</div>`;
+  // forecastElement.innerHTML = forecastHTML;
+}
+function getForecast(coords) {
+  console.log(coords);
+  let apikey = "256e0719bob599t8f79f42a814ed4fe3";
+  let lat = coords.latitude;
+  let lon = coords.longitude;
+  let url = `https://api.shecodes.io/weather/v1/forecast?lat=${lat}&lon=${lon}&key=${apikey}&units=metric`;
+  axios.get(url).then(forecast);
+}
 //change data based on thee city
 function changeData(res) {
-  console.log(res.data);
+  getForecast(res.data.coordinates);
+  console.log(res.data.coordinates);
   document.querySelector(
     "#icon"
   ).src = `http://shecodes-assets.s3.amazonaws.com/api/weather/icons/${res.data.condition.icon}.png`;
@@ -108,7 +148,7 @@ document
   .getElementById("current")
   .addEventListener("click", getCurrentPosition);
 
-  // a good idea to not change the main weather
+// a good idea to not change the main weather
 let temperatureMain = null;
 
 // weather convertion
@@ -117,8 +157,8 @@ function toCelsius() {
   fahrenheit.classList.remove("text-primary", "fw-bold");
   celsius.classList.add("text-primary", "fw-bold");
 }
-let celsius = document.getElementById("celsius")
-  celsius.addEventListener("click", toCelsius);
+let celsius = document.getElementById("celsius");
+celsius.addEventListener("click", toCelsius);
 
 function toFahrenheit() {
   document.querySelector("h1").innerHTML = temperatureMain * 9.5 + 32;
@@ -126,6 +166,7 @@ function toFahrenheit() {
   fahrenheit.classList.add("text-primary", "fw-bold");
 }
 
-let fahrenheit = document.getElementById("fahrenheit")
-  fahrenheit.addEventListener("click", toFahrenheit);
+let fahrenheit = document.getElementById("fahrenheit");
+fahrenheit.addEventListener("click", toFahrenheit);
+forecast();
 search("Tehran");
