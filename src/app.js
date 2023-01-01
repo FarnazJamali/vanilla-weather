@@ -1,13 +1,15 @@
+let week = [
+  "sunday",
+  "monday",
+  "tuesday",
+  "wednesday",
+  "thursday",
+  "friday",
+  "saturday",
+]; 
+
+//current date
 function formatDate() {
-  let week = [
-    "monday",
-    "tuesday",
-    "wednesday",
-    "thursday",
-    "friday",
-    "saturday",
-    "sunday",
-  ];
   let month = [
     "january",
     "february",
@@ -23,7 +25,8 @@ function formatDate() {
     "december",
   ];
   let now = new Date();
-  let day = week[now.getDay() - 1];
+  console.log(week[now.getDay()]);
+  let day = week[now.getDay()];
   let currentMonth = month[now.getMonth()];
   let time =
     now.getHours() +
@@ -40,37 +43,55 @@ function formatDate() {
 let newDate = new Date();
 document.querySelector("#date").innerHTML = formatDate(newDate);
 
-function forecast(res) {
-  console.log(res);
-  console.log(res && res.data.daily[3].time);
-  // let forecast = res.data.daily;
-  // console.log(forecast);
-  // let forecastElement = document.querySelector("#forecast");
-
-  let forecastHTML = `<div class="row">`;
-  //  res &&
-    //  res.data.daily.forEach(function (day,index) {
-    //    forecastHTML =
-    //      forecastHTML +
-    //      `
-    //     <div class="col-2">
-    //       <div class="weather-forecast-date">${day}</div>
-    //       <img
-    //         src="http://openweathermap.org/img/wn/50d@2x.png"
-    //         alt=""
-    //         width="42"
-    //       />
-    //       <div class="weather-forecast-temperatures">
-    //         <span class="weather-forecast-temperature-max"> 18° </span>
-    //         <span class="weather-forecast-temperature-min"> 12° </span>
-    //       </div>
-    //     </div>
-    // `;
-    //  });
-
-  // forecastHTML = forecastHTML + `</div>`;
-  // forecastElement.innerHTML = forecastHTML;
+//forecast date
+function forecastDate(timeStamp) {
+  let fDate = new Date(timeStamp * 1000);
+  let day = week[fDate.getDay()];
+  return day;
 }
+
+//* From this part future weather forecast starts.
+//forecast function ==> wants to show the first 5 days
+function forecast(res) {
+  let forecastElement = document.querySelector("#forecast");
+
+  let forecastHTML = `<div class="row justify-content-center mt-2">`;
+  {
+    res &&
+      res.data.daily.forEach(function (day, index) {
+        if (index < 5) {
+          forecastHTML =
+            forecastHTML +
+            `
+        <div class="col-2">
+          <div class="weather-forecast-date">${forecastDate(
+            res.data.daily[index].time
+          )}</div>
+          <img
+            src="http://shecodes-assets.s3.amazonaws.com/api/weather/icons/${
+              res.data.daily[index].condition.icon
+            }.png"
+            alt=""
+            width="42"
+          />
+          <div>
+            <span class="px-1 text-danger fw-bold"> ${Math.round(
+              res.data.daily[index].temperature.maximum
+            )} </span>
+            <span class="px-1 text-danger"> ${Math.round(
+              res.data.daily[index].temperature.minimum
+            )} </span>
+          </div>
+        </div>
+    `;
+        }
+      });
+    forecastHTML = forecastHTML + `</div>`;
+    forecastElement.innerHTML = forecastHTML;
+  }
+}
+
+// gives the coords of the searched city to the above function
 function getForecast(coords) {
   console.log(coords);
   let apikey = "256e0719bob599t8f79f42a814ed4fe3";
@@ -79,7 +100,9 @@ function getForecast(coords) {
   let url = `https://api.shecodes.io/weather/v1/forecast?lat=${lat}&lon=${lon}&key=${apikey}&units=metric`;
   axios.get(url).then(forecast);
 }
-//change data based on thee city
+
+//* From this part current weather forecast starts.
+//change data based on the city
 function changeData(res) {
   getForecast(res.data.coordinates);
   console.log(res.data.coordinates);
